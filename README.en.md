@@ -4,7 +4,22 @@
 
 HermesOpenWebUI QuicklyLaunch is a Linux quick-start toolkit for running Hermes Agent, Open WebUI, and Tailscale HTTPS Serve together. After installation, use `./run.sh` to start, restart, update, inspect status, and read logs.
 
-![Open WebUI after setup](img/openwebui.png)
+<table>
+  <tr>
+    <td width="58%" valign="top">
+      <a href="img/openwebui.png">
+        <img src="img/openwebui.png" alt="Open WebUI after setup" width="100%">
+      </a>
+      <p align="center"><strong>Open WebUI ready after setup</strong></p>
+    </td>
+    <td width="42%" valign="top">
+      <a href="img/run-command.png">
+        <img src="img/run-command.png" alt="run.sh command example" width="100%">
+      </a>
+      <p align="center"><strong>One-command startup workflow</strong></p>
+    </td>
+  </tr>
+</table>
 
 ## What it installs and starts
 
@@ -48,10 +63,6 @@ Open WebUI local : http://127.0.0.1:3000
 Hermes health    : http://127.0.0.1:8642/health
 Tailscale HTTPS  : the Conduit URL shown by ./run.sh status
 ```
-
-## Command example
-
-![run.sh restart example](img/run-command.png)
 
 ## Common commands
 
