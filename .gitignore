@@ -1,0 +1,39 @@
+# Runtime / local state
+.env
+.env.*
+!.env.example
+*.log
+logs/
+runtime/
+state/
+backups/
+*.tgz
+*.tar.gz
+
+# Upstream projects are cloned/installed at runtime, not vendored here
+hermes-agent/
+open-webui/
+
+# Python / Node / build artifacts
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+node_modules/
+dist/
+build/
+.cache/
+.pytest_cache/
+.coverage
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Tailscale/ngrok local artifacts
+tailscale_*/
+tailscaled.sock
+tailscaled.pid
+ngrok*.log
