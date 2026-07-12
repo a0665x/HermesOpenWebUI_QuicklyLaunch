@@ -37,17 +37,24 @@ Run Hermes Agent, Open WebUI, and Tailscale HTTPS Serve from one simple command 
 
 <table>
   <tr>
-    <td width="58%" valign="top">
+    <td align="center">
       <a href="img/openwebui.png">
-        <img src="img/openwebui.png" alt="Open WebUI after setup" width="100%">
+        <img src="img/openwebui.png" alt="Open WebUI after setup" width="92%">
       </a>
-      <p align="center"><strong>Open WebUI ready after setup</strong></p>
+      <br>
+      <sub><strong>Open WebUI ready after setup</strong></sub>
     </td>
-    <td width="42%" valign="top">
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td align="center">
       <a href="img/run-command.png">
-        <img src="img/run-command.png" alt="run.sh command example" width="100%">
+        <img src="img/run-command.png" alt="run.sh command example" width="78%">
       </a>
-      <p align="center"><strong>One-command startup workflow</strong></p>
+      <br>
+      <sub><strong>One-command startup workflow</strong></sub>
     </td>
   </tr>
 </table>

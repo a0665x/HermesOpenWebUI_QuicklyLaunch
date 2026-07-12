@@ -6,17 +6,24 @@ HermesOpenWebUI QuicklyLaunch 是一套 Linux 快速啟動工具，幫你把 Her
 
 <table>
   <tr>
-    <td width="58%" valign="top">
+    <td align="center">
       <a href="img/openwebui.png">
-        <img src="img/openwebui.png" alt="Open WebUI 安裝完成後的畫面" width="100%">
+        <img src="img/openwebui.png" alt="Open WebUI 安裝完成後的畫面" width="92%">
       </a>
-      <p align="center"><strong>Open WebUI 安裝完成後的畫面</strong></p>
+      <br>
+      <sub><strong>Open WebUI 安裝完成後的畫面</strong></sub>
     </td>
-    <td width="42%" valign="top">
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td align="center">
       <a href="img/run-command.png">
-        <img src="img/run-command.png" alt="run.sh 指令執行範例" width="100%">
+        <img src="img/run-command.png" alt="run.sh 指令執行範例" width="78%">
       </a>
-      <p align="center"><strong>run.sh 一鍵啟動流程</strong></p>
+      <br>
+      <sub><strong>run.sh 一鍵啟動流程</strong></sub>
     </td>
   </tr>
 </table>
