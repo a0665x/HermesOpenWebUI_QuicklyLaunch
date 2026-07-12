@@ -126,7 +126,11 @@ install_hermes_repo() {
     git clone "$HERMES_REPO_URL" "$HERMES_REPO"
   fi
   git -C "$HERMES_REPO" fetch origin "$HERMES_REF" --depth 1 || true
-  git -C "$HERMES_REPO" checkout "$HERMES_REF" || true
+  if git -C "$HERMES_REPO" rev-parse --verify "origin/$HERMES_REF" >/dev/null 2>&1; then
+    git -C "$HERMES_REPO" checkout -B "$HERMES_REF" "origin/$HERMES_REF"
+  else
+    git -C "$HERMES_REPO" checkout "$HERMES_REF" || true
+  fi
   if [[ ! -x "$HERMES_PY" ]]; then
     if have uv; then
       (cd "$HERMES_REPO" && uv venv "$HERMES_VENV" && uv pip install -p "$HERMES_PY" -e .)
