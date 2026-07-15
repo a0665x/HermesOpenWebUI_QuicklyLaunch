@@ -264,6 +264,26 @@ get_valid_ts_status_json() {
   return 1
 }
 
+get_settled_ts_status_json() {
+  local attempts="${1:-10}" out="" backend=""
+  for _ in $(seq 1 "$attempts"); do
+    out="$(ts_status_json || true)"
+    if [[ -n "$out" ]] && printf '%s' "$out" | python3 -m json.tool >/dev/null 2>&1; then
+      backend="$(printf '%s' "$out" | json_field BackendState)"
+      if [[ -n "$backend" && "$backend" != "NoState" && "$backend" != "Starting" ]]; then
+        printf '%s' "$out"
+        return 0
+      fi
+    fi
+    sleep 1
+  done
+  if [[ -n "$out" ]] && printf '%s' "$out" | python3 -m json.tool >/dev/null 2>&1; then
+    printf '%s' "$out"
+    return 0
+  fi
+  return 1
+}
+
 start_tailscaled() {
   step "Starting user-space Tailscale daemon"
   mkdir -p "$TS_STATE_DIR"
@@ -296,7 +316,7 @@ ensure_tailscaled() {
 ensure_tailscale_login() {
   step "Checking Tailscale login state"
   local status backend auth_url
-  status="$(get_valid_ts_status_json)"
+  status="$(get_settled_ts_status_json)"
   backend="$(printf '%s' "$status" | json_field BackendState)"
   if [[ "$backend" == "Running" ]]; then
     ok "Tailscale node is logged in"
