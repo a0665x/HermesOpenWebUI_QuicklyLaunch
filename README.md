@@ -76,7 +76,7 @@ cd HermesOpenWebUI_QuicklyLaunch
 ./run.sh up         # start or repair the stack
 ./run.sh restart    # restart everything
 ./run.sh rebuild    # update and recreate runtime services
-./run.sh status     # show service status and URLs
+./run.sh status     # show services, URLs, and both Tailscale nodes
 ./healthcheck.sh    # verify Open WebUI, Hermes, Tailscale Serve, and DNS
 ```
 

@@ -78,7 +78,7 @@ Tailscale HTTPS  : the Conduit URL shown by ./run.sh status
 ./run.sh up           # Start or repair the full stack
 ./run.sh restart      # Stop and start again
 ./run.sh rebuild      # Pull Open WebUI image, recreate container, and refresh Hermes checkout
-./run.sh status       # Show current service status and URLs
+./run.sh status       # Show services, URLs, and both system/project Tailscale nodes
 ./run.sh doctor       # Check dependencies and paths
 ./run.sh logs         # Show recent logs
 ./run.sh stop         # Stop Hermes, Tailscale daemon, and Open WebUI

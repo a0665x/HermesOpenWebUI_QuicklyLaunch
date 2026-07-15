@@ -251,6 +251,30 @@ ts_status_json() {
   fi
 }
 
+system_ts_status_json() {
+  local system_ts_bin
+  system_ts_bin="$(command -v tailscale 2>/dev/null || true)"
+  [[ -n "$system_ts_bin" ]] || return 1
+  if have timeout; then
+    timeout "$TS_STATUS_TIMEOUT" "$system_ts_bin" status --json 2>/dev/null
+  else
+    "$system_ts_bin" status --json 2>/dev/null
+  fi
+}
+
+print_tailscale_node_summary() {
+  local label="$1" status_json="$2" socket_label="$3"
+  local backend host dns ips online
+  backend="$(printf '%s' "$status_json" | json_field BackendState)"
+  host="$(printf '%s' "$status_json" | json_field Self.HostName)"
+  dns="$(printf '%s' "$status_json" | json_field Self.DNSName | sed 's/\.$//')"
+  ips="$(printf '%s' "$status_json" | json_field TailscaleIPs)"
+  online="$(printf '%s' "$status_json" | json_field Self.Online)"
+  printf '%-20s: backend=%s host=%s online=%s\n' "$label" "${backend:-unknown}" "${host:-unknown}" "${online:-unknown}"
+  printf '  DNS / IPs         : %s / %s\n' "${dns:-unknown}" "${ips:-unknown}"
+  printf '  Socket            : %s\n' "$socket_label"
+}
+
 get_valid_ts_status_json() {
   local attempts="${1:-8}" out
   for _ in $(seq 1 "$attempts"); do
@@ -372,25 +396,29 @@ ensure_hermes_api() {
 
 status_summary() {
   step "Current summary"
-  local running policy status backend dns ips url
+  local running policy system_status status dns url
   running="$(docker inspect -f '{{.State.Running}}' "$OPENWEBUI_CONTAINER" 2>/dev/null || true)"
   policy="$(docker inspect -f '{{.HostConfig.RestartPolicy.Name}}' "$OPENWEBUI_CONTAINER" 2>/dev/null || true)"
   printf 'Open WebUI container : running=%s restart=%s\n' "${running:-missing}" "${policy:-missing}"
   if curl -fsSL "$OPENWEBUI_LOCAL_URL" >/dev/null 2>&1; then printf 'Open WebUI local     : healthy (%s)\n' "$OPENWEBUI_LOCAL_URL"; else printf 'Open WebUI local     : not healthy\n'; fi
   if curl -fsSL "$HERMES_API_HEALTH_URL" >/dev/null 2>&1; then printf 'Hermes API           : healthy (%s)\n' "$HERMES_API_HEALTH_URL"; else printf 'Hermes API           : not healthy\n'; fi
+  if system_status="$(system_ts_status_json)" && [[ -n "$system_status" ]] && printf '%s' "$system_status" | python3 -m json.tool >/dev/null 2>&1; then
+    print_tailscale_node_summary "Tailscale system" "$system_status" "default system socket"
+  else
+    printf '%-20s: unavailable (plain tailscale CLI/system daemon)\n' "Tailscale system"
+  fi
   if status="$(get_valid_ts_status_json 2 2>/dev/null)"; then
-    backend="$(printf '%s' "$status" | json_field BackendState)"
     dns="$(printf '%s' "$status" | json_field Self.DNSName | sed 's/\.$//')"
-    ips="$(printf '%s' "$status" | json_field TailscaleIPs)"
-    printf 'Tailscale backend    : %s\n' "${backend:-unknown}"
-    printf 'Tailscale DNS        : %s\n' "${dns:-unknown}"
-    printf 'Tailscale IPs        : %s\n' "${ips:-unknown}"
+    print_tailscale_node_summary "Tailscale project" "$status" "$TS_SOCKET"
     [[ -n "$dns" ]] && printf 'Conduit HTTPS URL    : https://%s\n' "$dns"
   else
-    printf 'Tailscale backend    : unavailable\n'
+    printf '%-20s: unavailable\n' "Tailscale project"
+    printf '  Socket            : %s\n' "$TS_SOCKET"
   fi
   url="$(ngrok_public_url || true)"
-  [[ -n "$url" ]] && printf 'ngrok HTTPS URL      : %s\n' "$url"
+  if [[ -n "$url" ]]; then
+    printf 'ngrok HTTPS URL      : %s\n' "$url"
+  fi
 }
 
 ngrok_public_url() {

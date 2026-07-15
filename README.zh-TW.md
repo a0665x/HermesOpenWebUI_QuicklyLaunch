@@ -78,7 +78,7 @@ Tailscale HTTPS  : 依照 ./run.sh status 顯示的 Conduit URL
 ./run.sh up           # 啟動或修復整套服務
 ./run.sh restart      # 停止後重新啟動
 ./run.sh rebuild      # 更新 Open WebUI image、重建 container，並更新 Hermes checkout
-./run.sh status       # 顯示目前狀態與 URL
+./run.sh status       # 顯示服務、URL，以及系統／專案兩個 Tailscale 節點
 ./run.sh doctor       # 檢查依賴與路徑設定
 ./run.sh logs         # 顯示近期 logs
 ./run.sh stop         # 停止 Hermes、Tailscale daemon、Open WebUI
